@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Year of the Pig - datamine</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <style>
+        /* === GENERAL === */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/6c6374bad0b0b6d204d8d6dc4a18d820.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/e8acd7d9bf6207f99350ca9f9e23b168.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/3bdef1251a424500c1b3a78dea9b7e57.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/be0060dafb7a0e31d2a1ca17c0708636.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://discordapp.com/assets/8e12fb4f14d9c4592eb8ec9f22337b04.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    white-space: pre-wrap;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.spoiler {
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, Monospace;
+}
+
+.pre--multiline {
+    margin-top: 4px;
+    padding: 8px;
+    border: 2px solid;
+    border-radius: 5px;    
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 85%;
+}
+
+.mention {
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.45em;
+    height: 1.45em;
+    margin: 0 1px;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1rem;
+    height: 1rem;
+}
+
+.emoji--large {
+    width: 2rem;
+    height: 2rem;
+}
+
+/* === INFO === */
+
+.info {
+    display: flex;
+    max-width: 100%;
+    margin: 0 5px 10px 5px;    
+}
+
+.info__guild-icon-container {
+    flex: 0;
+}
+
+.info__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.info__metadata {
+    flex: 1;
+    margin-left: 10px;
+}
+
+.info__guild-name {
+    font-size: 1.4em;
+}
+
+.info__channel-name {
+    font-size: 1.2em;
+}
+
+.info__channel-topic {
+    margin-top: 2px;
+}
+
+.info__channel-message-count {
+    margin-top: 2px;
+}
+
+.info__channel-date-range {
+    margin-top: 2px;
+}
+
+/* === CHATLOG === */
+
+.chatlog {
+    max-width: 100%;
+    margin-bottom: 24px;
+}
+
+.chatlog__message-group {
+    display: flex;
+    margin: 0 10px;
+    padding: 15px 0;
+    border-top: 1px solid;
+}
+
+.chatlog__author-avatar-container {
+    flex: 0;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    flex: 1;
+    min-width: 50%;
+    margin-left: 20px;
+}
+
+.chatlog__author-name {
+    font-size: 1em;
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 5px;
+    font-size: .75em;
+}
+
+.chatlog__content {
+    padding-top: 5px;
+    font-size: .9375em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 3px;
+    font-size: .8em;
+}
+
+.chatlog__attachment {
+    margin: 5px 0;
+}
+
+.chatlog__attachment-thumbnail {
+    max-width: 50%;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    max-width: 520px;
+    margin-top: 5px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 4px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 10px;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    width: 100%;
+    display: flex;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.chatlog__embed-author-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 9px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: .875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 4px;
+    font-size: .875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 10px;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 4px;
+    font-size: .875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-size: .875em;
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 20px;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 10px;
+}
+
+.chatlog__embed-image {    
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 10px;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-weight: 500;
+    font-size: .75em;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 6px 2px 2px 2px;
+    padding: 3px 6px;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 6px;
+    font-size: .875em;
+}
+
+.chatlog__bot-tag {
+    margin-left: 0.3em;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    padding: 1px 2px;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    position: relative;
+    top: -.2em;
+}
+    </style>
+    <style>
+        /* === GENERAL === */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #839496 !important;
+}
+
+.mention {
+    color: #7289da;
+}
+
+/* === INFO === */
+
+.info__guild-name {
+    color: #ffffff;
+}
+
+.info__channel-name {
+    color: #ffffff;
+}
+
+.info__channel-topic {
+    color: #ffffff;
+}
+
+/* === CHATLOG === */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach((block) => {
+                hljs.highlightBlock(block);
+            });
+        });
+    </script>
+</head>
+<body>
+    
+<div class="info">
+    <div class="info__guild-icon-container">
+        <img class="info__guild-icon" src="https://cdn.discordapp.com/icons/645459078675693569/a_abcf9e9ccf7a8cda4736cecd5d356260.png" />
+    </div>
+    <div class="info__metadata">
+        <div class="info__guild-name">Year of the Pig</div>
+        <div class="info__channel-name">datamine</div>
+        
+
+        <div class="info__channel-message-count">86 messages</div>
+        
+    </div>
+</div>
+
+<div class="chatlog">
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/342505426044059648/ab57441c1907355ff7e59d3edb9dc883.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="cntryder#8416" data-user-id="342505426044059648">cntryder</span>
+                <span class="chatlog__timestamp">11-Dec-19 01:26 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654433856065110066/atx_lionmascot_mask_f.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654433856065110066/atx_lionmascot_mask_f.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654433974009069568/Annotation_2019-12-11_162643.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654433974009069568/Annotation_2019-12-11_162643.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654434479099609088/Annotation_2019-12-11_162243.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654434479099609088/Annotation_2019-12-11_162243.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654434570195959834/Annotation_2019-12-11_155016.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654434570195959834/Annotation_2019-12-11_155016.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654434614458187777/Annotation_2019-12-11_162057.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654434614458187777/Annotation_2019-12-11_162057.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654434635534827585/Annotation_2019-12-11_162130.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654434635534827585/Annotation_2019-12-11_162130.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__reactions">
+                                <div class="chatlog__reaction">
+                                    <img class="emoji emoji--small" alt="monkas" title="monkas" src="https://cdn.discordapp.com/emojis/409348484630839296.png" />
+                                    <span class="chatlog__reaction-count">2</span>
+                                </div>
+                        </div>
+                        <div class="chatlog__content">
+                            <span class="markdown">No clue what this getting used for.... But I like it</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654436178749030400/Annotation_2019-12-11_163457.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654436178749030400/Annotation_2019-12-11_163457.png" />
+                            </a>
+                        </div>
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/210083743363366912/adc89a1d4b505230543df0554f80ce6d.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="Meat#0037" data-user-id="210083743363366912">Meat</span>
+                <span class="chatlog__timestamp">11-Dec-19 01:37 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">yeahhh thats awesome</span>
+
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/342505426044059648/ab57441c1907355ff7e59d3edb9dc883.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="cntryder#8416" data-user-id="342505426044059648">cntryder</span>
+                <span class="chatlog__timestamp">11-Dec-19 01:38 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">I want the JunkJet</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654436872810004490/Annotation_2019-12-11_163804.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654436872810004490/Annotation_2019-12-11_163804.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">There seems to be a Bow Trap</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654437341657563157/Annotation_2019-12-11_163957.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654437341657563157/Annotation_2019-12-11_163957.png" />
+                            </a>
+                        </div>
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/342505426044059648/ab57441c1907355ff7e59d3edb9dc883.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="cntryder#8416" data-user-id="342505426044059648">cntryder</span>
+                <span class="chatlog__timestamp">11-Dec-19 01:52 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown"><span class="mention" title="Tahoe#4430">@Tahoe</span> Heres your probe</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654440351100305449/Annotation_2019-12-11_165154.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654440351100305449/Annotation_2019-12-11_165154.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654440518880854027/Annotation_2019-12-11_165243.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654440518880854027/Annotation_2019-12-11_165243.png" />
+                            </a>
+                        </div>
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/342505426044059648/ab57441c1907355ff7e59d3edb9dc883.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="cntryder#8416" data-user-id="342505426044059648">cntryder</span>
+                <span class="chatlog__timestamp">11-Dec-19 02:30 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_lootbag_piggybank</span>
+
+                                <span class="chatlog__edited-timestamp" title="11-Dec-19 02:33 PM">(edited)</span>
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654449846216032287/Annotation_2019-12-11_172934.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654449846216032287/Annotation_2019-12-11_172934.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654449902092288047/Annotation_2019-12-11_173003.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654449902092288047/Annotation_2019-12-11_173003.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_lootbag_settlertraveler</span>
+
+                                <span class="chatlog__edited-timestamp" title="11-Dec-19 02:33 PM">(edited)</span>
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654450111597772810/Annotation_2019-12-11_173029.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654450111597772810/Annotation_2019-12-11_173029.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654450160595763201/Annotation_2019-12-11_173102.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654450160595763201/Annotation_2019-12-11_173102.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_lootbag_raiderbonepile</span>
+
+                                <span class="chatlog__edited-timestamp" title="11-Dec-19 02:33 PM">(edited)</span>
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654450321610899466/Annotation_2019-12-11_173137.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654450321610899466/Annotation_2019-12-11_173137.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_lootbag_presenttrap</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654450540721471488/Annotation_2019-12-11_173225.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654450540721471488/Annotation_2019-12-11_173225.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_rollerderby_f</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654451373731217408/Annotation_2019-12-11_173545.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654451373731217408/Annotation_2019-12-11_173545.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654451442005835798/Annotation_2019-12-11_173614.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654451442005835798/Annotation_2019-12-11_173614.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">pillboxhatf_facebones</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654452572773548062/Annotation_2019-12-11_174031.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654452572773548062/Annotation_2019-12-11_174031.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">mudflaphat_m</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654452856006508584/Annotation_2019-12-11_174136.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654452856006508584/Annotation_2019-12-11_174136.png" />
+                            </a>
+                        </div>
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/210083743363366912/adc89a1d4b505230543df0554f80ce6d.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="Meat#0037" data-user-id="210083743363366912">Meat</span>
+                <span class="chatlog__timestamp">11-Dec-19 02:42 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">your going deep lol i didnt see anyone else post half this stuff..i like it</span>
+
+                                <span class="chatlog__edited-timestamp" title="11-Dec-19 02:42 PM">(edited)</span>
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/342505426044059648/ab57441c1907355ff7e59d3edb9dc883.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="cntryder#8416" data-user-id="342505426044059648">cntryder</span>
+                <span class="chatlog__timestamp">11-Dec-19 02:43 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">captaincosmosbody_m</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654453230473838663/Annotation_2019-12-11_174300.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654453230473838663/Annotation_2019-12-11_174300.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_albinofur_f</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654453511291011082/Annotation_2019-12-11_174418.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654453511291011082/Annotation_2019-12-11_174418.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_samurai_helmet_m</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654453743500394496/Annotation_2019-12-11_174514.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654453743500394496/Annotation_2019-12-11_174514.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_samurai_outfit_m</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654453893731975209/Annotation_2019-12-11_174549.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654453893731975209/Annotation_2019-12-11_174549.png" />
+                            </a>
+                        </div>
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/210083743363366912/adc89a1d4b505230543df0554f80ce6d.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="Meat#0037" data-user-id="210083743363366912">Meat</span>
+                <span class="chatlog__timestamp">11-Dec-19 02:46 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">find me the atx mosaic tile floor</span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"><img class="emoji emoji--large" alt="kappa" title="kappa" src="https://cdn.discordapp.com/emojis/345292237539639298.png" /></span>
+
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/342505426044059648/ab57441c1907355ff7e59d3edb9dc883.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="cntryder#8416" data-user-id="342505426044059648">cntryder</span>
+                <span class="chatlog__timestamp">11-Dec-19 02:46 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_gladiator_helmet_m</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654454111906824223/Annotation_2019-12-11_174637.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654454111906824223/Annotation_2019-12-11_174637.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_gladiator_m</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654454257935843339/Annotation_2019-12-11_174718.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654454257935843339/Annotation_2019-12-11_174718.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_bugzapper</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654455383879974912/Annotation_2019-12-11_175141.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654455383879974912/Annotation_2019-12-11_175141.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_gingerbreadchair</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654455626595958794/Annotation_2019-12-11_175240.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654455626595958794/Annotation_2019-12-11_175240.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_plushie_silvershroud</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654455842409807881/Annotation_2019-12-11_175333.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654455842409807881/Annotation_2019-12-11_175333.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_windchime_molerat</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654456115689553930/Annotation_2019-12-11_175441.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654456115689553930/Annotation_2019-12-11_175441.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">I also seen a GiddyupButtercup ride in the files</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654456760207409171/Annotation_2019-12-11_175658.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654456760207409171/Annotation_2019-12-11_175658.png" />
+                            </a>
+                        </div>
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/342505426044059648/ab57441c1907355ff7e59d3edb9dc883.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="cntryder#8416" data-user-id="342505426044059648">cntryder</span>
+                <span class="chatlog__timestamp">11-Dec-19 03:07 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown"><span class="mention" title="Meat#0037">@Meat</span> I&#39;ll look for the mosaic tile floor, I figure they are a texture</span>
+
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/342505426044059648/ab57441c1907355ff7e59d3edb9dc883.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="cntryder#8416" data-user-id="342505426044059648">cntryder</span>
+                <span class="chatlog__timestamp">11-Dec-19 03:18 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654462012134522902/atx_floor_mosaictile01_l.dds">
+                                
+                                    Attachment: atx_floor_mosaictile01_l.dds (682.8 KB)
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654462169655803904/atx_floor_mosaictile01_l.bmp">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654462169655803904/atx_floor_mosaictile01_l.bmp" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654462598091374602/atx_floor_mosaictile01_l.jpg">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654462598091374602/atx_floor_mosaictile01_l.jpg" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_skin_weaponskin_moleminergauntlet_candycane_l</span>
+
+                                <span class="chatlog__edited-timestamp" title="11-Dec-19 03:23 PM">(edited)</span>
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654463268991139852/atx_skin_weaponskin_moleminergauntlet_candycane_l.jpg">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654463268991139852/atx_skin_weaponskin_moleminergauntlet_candycane_l.jpg" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_skin_weaponskin_minigun_lucilles_lullaby_l</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654463428735401994/atx_skin_weaponskin_minigun_lucilles_lullaby_l.jpg">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654463428735401994/atx_skin_weaponskin_minigun_lucilles_lullaby_l.jpg" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">babylon_weaponskin_wrappingpaperrifle_christmas2019_l</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654463611552530469/babylon_weaponskin_wrappingpaperrifle_christmas2019_l.jpg">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654463611552530469/babylon_weaponskin_wrappingpaperrifle_christmas2019_l.jpg" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_utility_refrigerator_freezer_thecooler_l</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654463766406365197/atx_utility_refrigerator_freezer_thecooler_l.jpg">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654463766406365197/atx_utility_refrigerator_freezer_thecooler_l.jpg" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_apparel_outfit_gala_tuxedo_l</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654464010111942687/atx_apparel_outfit_gala_tuxedo_l.jpg">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654464010111942687/atx_apparel_outfit_gala_tuxedo_l.jpg" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">atx_camp_decoration_gold_mrfuzzyride_l</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654464294800326666/atx_camp_decoration_gold_mrfuzzyride_l.jpg">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654464294800326666/atx_camp_decoration_gold_mrfuzzyride_l.jpg" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654464588972294154/Annotation_2019-12-11_182819.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654464588972294154/Annotation_2019-12-11_182819.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">Looks Like some new Signs coming too</span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654464963833888819/Annotation_2019-12-11_182945.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654464963833888819/Annotation_2019-12-11_182945.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654465025146093586/Annotation_2019-12-11_183011.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654465025146093586/Annotation_2019-12-11_183011.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654465108436713500/Annotation_2019-12-11_183024.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654465108436713500/Annotation_2019-12-11_183024.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654465140556824577/Annotation_2019-12-11_183036.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654465140556824577/Annotation_2019-12-11_183036.png" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654465183493914627/Annotation_2019-12-11_183049.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654465183493914627/Annotation_2019-12-11_183049.png" />
+                            </a>
+                        </div>
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/342505426044059648/ab57441c1907355ff7e59d3edb9dc883.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="cntryder#8416" data-user-id="342505426044059648">cntryder</span>
+                <span class="chatlog__timestamp">11-Dec-19 03:54 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">I wasn&#39;t really digging that deep.. I was just prosing around a little bit looking for cool shit to try to get it 3D printing ready</span>
+
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/210083743363366912/adc89a1d4b505230543df0554f80ce6d.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="Meat#0037" data-user-id="210083743363366912">Meat</span>
+                <span class="chatlog__timestamp">11-Dec-19 04:43 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">You have a 3D printer ? I was always looking for one</span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">Just never pulled the trigger on one yet</span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">Also did u get the nif scope to work how are you pulling these image?</span>
+
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/342505426044059648/ab57441c1907355ff7e59d3edb9dc883.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="cntryder#8416" data-user-id="342505426044059648">cntryder</span>
+                <span class="chatlog__timestamp">11-Dec-19 04:50 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">Yea I have a couple of 3D printers..Been looking at a 3rd one... I could always get NIFscope to open the nif files.. I just could never figure out how to edit them</span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">Most of them are just screen shots of the nifscope window</span>
+
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/342505426044059648/ab57441c1907355ff7e59d3edb9dc883.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="cntryder#8416" data-user-id="342505426044059648">cntryder</span>
+                <span class="chatlog__timestamp">11-Dec-19 05:27 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">If your looking at printers this is a good one from what I hear, and is the next one I plan on getting...</span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"><a href="https://www.amazon.com/Creality-Economic-Printing-Function-220x220x250MM/dp/B07CGMN3XF/ref=sr_1_6?crid=20H1DFC19RAEP&keywords=creality+ender+3&qid=1576113966&sprefix=Creality%252Caps%252C286&sr=8-6">https://www.amazon.com/Creality-Economic-Printing-Function-220x220x250MM/dp/B07CGMN3XF/ref=sr_1_6?crid=20H1DFC19RAEP&amp;keywords=creality+ender+3&amp;qid=1576113966&amp;sprefix=Creality%2Caps%2C286&amp;sr=8-6</a></span>
+
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/210083743363366912/adc89a1d4b505230543df0554f80ce6d.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="Meat#0037" data-user-id="210083743363366912">Meat</span>
+                <span class="chatlog__timestamp">11-Dec-19 05:30 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">that ones looks cool</span>
+
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/342505426044059648/ab57441c1907355ff7e59d3edb9dc883.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="cntryder#8416" data-user-id="342505426044059648">cntryder</span>
+                <span class="chatlog__timestamp">11-Dec-19 05:31 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">Currently I  have one like this......</span>
+
+                                <span class="chatlog__edited-timestamp" title="11-Dec-19 05:32 PM">(edited)</span>
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"><a href="https://www.amazon.com/TRONXY-X5SA-Assembly-Leveling-330330400/dp/B07K4957PZ/ref=sr_1_6?keywords=Tronxy+x5s&qid=1576114268&sr=8-6https://www.amazon.com/TRONXY-X5SA-Assembly-Leveling-330330400/dp/B07K4957PZ/ref=sr_1_6?keywords=Tronxy+x5s&qid=1576114268&sr=8-6">https://www.amazon.com/TRONXY-X5SA-Assembly-Leveling-330330400/dp/B07K4957PZ/ref=sr_1_6?keywords=Tronxy+x5s&amp;qid=1576114268&amp;sr=8-6https://www.amazon.com/TRONXY-X5SA-Assembly-Leveling-330330400/dp/B07K4957PZ/ref=sr_1_6?keywords=Tronxy+x5s&amp;qid=1576114268&amp;sr=8-6</a></span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">And This one...</span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"><a href="https://www.amazon.com/Monoprice-Resolution-Printer-Leveling-Curing/dp/B07PV5XKNN/ref=sr_1_3?keywords=Monoprice+mini+sla&qid=1576114296&sr=8-3">https://www.amazon.com/Monoprice-Resolution-Printer-Leveling-Curing/dp/B07PV5XKNN/ref=sr_1_3?keywords=Monoprice+mini+sla&amp;qid=1576114296&amp;sr=8-3</a></span>
+
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/538913329544953856/b2ad61ef51030ea6ac80841599405245.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="OPK_Elite#2904" data-user-id="538913329544953856">OPK_Elite</span>
+                <span class="chatlog__timestamp">11-Dec-19 09:06 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown"><img class="emoji emoji--large" alt="yodahand" title="yodahand" src="https://cdn.discordapp.com/emojis/652306224452468746.png" /></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654549557031731210/unknown.png">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654549557031731210/unknown.png" />
+                            </a>
+                        </div>
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/342505426044059648/ab57441c1907355ff7e59d3edb9dc883.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="cntryder#8416" data-user-id="342505426044059648">cntryder</span>
+                <span class="chatlog__timestamp">11-Dec-19 09:12 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown"><span class="mention" title="OPK_Elite#2904">@OPK_Elite</span> I&#39;ve seen that one.. There are a couple others too.. I think</span>
+
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/538913329544953856/b2ad61ef51030ea6ac80841599405245.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="OPK_Elite#2904" data-user-id="538913329544953856">OPK_Elite</span>
+                <span class="chatlog__timestamp">11-Dec-19 09:12 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">yeah, i just downloaded nifskope and im figuring it out slowly but surely</span>
+
+                                <span class="chatlog__edited-timestamp" title="11-Dec-19 09:13 PM">(edited)</span>
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/342505426044059648/ab57441c1907355ff7e59d3edb9dc883.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="cntryder#8416" data-user-id="342505426044059648">cntryder</span>
+                <span class="chatlog__timestamp">11-Dec-19 09:13 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">I really only use it to look at the meshes</span>
+
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/538913329544953856/b2ad61ef51030ea6ac80841599405245.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="OPK_Elite#2904" data-user-id="538913329544953856">OPK_Elite</span>
+                <span class="chatlog__timestamp">11-Dec-19 09:13 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">yeah, same</span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">wanna see it A L L</span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">lol</span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">Tesla T60 <img class="emoji " alt="👀" title="👀" src="https://twemoji.maxcdn.com/2/72x72/1f440.png" /></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654551558800932865/pa_t60_tesla_larm_20191212_00-10-29.jpg">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654551558800932865/pa_t60_tesla_larm_20191212_00-10-29.jpg" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown"></span>
+
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654551925823373312/pa_t60_tesla_body_20191212_00-14-41.jpg">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654551925823373312/pa_t60_tesla_body_20191212_00-14-41.jpg" />
+                            </a>
+                        </div>
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/538913329544953856/b2ad61ef51030ea6ac80841599405245.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="OPK_Elite#2904" data-user-id="538913329544953856">OPK_Elite</span>
+                <span class="chatlog__timestamp">11-Dec-19 09:28 PM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">What the fuck is a gutpuker...</span>
+
+                                <span class="chatlog__edited-timestamp" title="11-Dec-19 09:30 PM">(edited)</span>
+                        </div>
+
+                        <div class="chatlog__attachment">
+                            <a href="https://cdn.discordapp.com/attachments/654433534106271765/654555050248503321/gutpuker01_20191212_00-26-08.jpg">
+                                
+                                    <img class="chatlog__attachment-thumbnail" src="https://cdn.discordapp.com/attachments/654433534106271765/654555050248503321/gutpuker01_20191212_00-26-08.jpg" />
+                            </a>
+                        </div>
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">sorry, the image is trash, i did something and cant seem to get the screen back to centered</span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">I am assuming that it will be some sort of new enemy npc in wastelanders?</span>
+
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/356049101395066882/a415e1b543de2f32546628f691781913.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="biorpg#3082" data-user-id="356049101395066882">biorpg</span>
+                <span class="chatlog__timestamp">01-Feb-20 02:35 AM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">I spawned one of those in my camp</span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">its fairly large,</span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">those tongues were about as long as a person laying down (that exact model was the one I spawned)</span>
+
+                                <span class="chatlog__edited-timestamp" title="01-Feb-20 02:40 AM">(edited)</span>
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/538913329544953856/b2ad61ef51030ea6ac80841599405245.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="OPK_Elite#2904" data-user-id="538913329544953856">OPK_Elite</span>
+                <span class="chatlog__timestamp">01-Feb-20 04:49 AM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">But wtf is it tho???</span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">I&#39;ve been trying to figure it out, if it&#39;s like an upcoming enemy or something</span>
+
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/372940145961336833/0e2c00e9150a389ceb53d29ef8435b9a.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="Tahoe#4430" data-user-id="372940145961336833">Tahoe</span>
+                <span class="chatlog__timestamp">01-Feb-20 05:54 AM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">Looks like the thing in the bottom of lucky hole mine</span>
+
+                        </div>
+
+
+
+            </div>
+        </div>
+        <div class="chatlog__message-group">
+            <div class="chatlog__author-avatar-container">
+                <img class="chatlog__author-avatar" src="https://cdn.discordapp.com/avatars/210083743363366912/adc89a1d4b505230543df0554f80ce6d.png" />
+            </div>            
+            <div class="chatlog__messages">
+                <span class="chatlog__author-name" title="Meat#0037" data-user-id="210083743363366912">Meat</span>
+                <span class="chatlog__timestamp">01-Feb-20 06:33 AM</span>
+
+                        <div class="chatlog__content">
+                            <span class="markdown">^</span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">yeah I was going to say that</span>
+
+                        </div>
+
+
+
+                        <div class="chatlog__content">
+                            <span class="markdown">Maybe it’s part of the cult lore</span>
+
+                        </div>
+
+
+
+            </div>
+        </div>
+</div>
+
+</body>
+</html>
